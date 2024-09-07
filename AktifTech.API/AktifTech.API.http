@@ -1,0 +1,6 @@
+@AktifTech.API_HostAddress = http://localhost:5247
+
+GET {{AktifTech.API_HostAddress}}/customers/
+Accept: application/json
+
+###

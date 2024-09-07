@@ -38,7 +38,7 @@ namespace AktifTech.Database.Repositories
             return await _context.Customer.FindAsync(id);
         }
 
-        public async Task<Customer> LoginAsync(string mail, string password)
+        public async Task<Customer?> LoginAsync(string mail, string password)
         {
             //string _password = Encryption.Encrypt(password); //business tarafına alınacak
             return await _context.Customer.FirstOrDefaultAsync(x => x.Mail == mail && x.Password == password);

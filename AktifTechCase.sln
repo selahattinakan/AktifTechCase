@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AktifTech.Constant", "Aktif
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AktifTech.Business", "AktifTech.Business\AktifTech.Business.csproj", "{33D18D8D-C35E-4490-B128-694FACA58FBF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AktifTech.API", "AktifTech.API\AktifTech.API.csproj", "{0B08642F-9A4B-4069-A0E9-C53A0A1B9284}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{33D18D8D-C35E-4490-B128-694FACA58FBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{33D18D8D-C35E-4490-B128-694FACA58FBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{33D18D8D-C35E-4490-B128-694FACA58FBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0B08642F-9A4B-4069-A0E9-C53A0A1B9284}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0B08642F-9A4B-4069-A0E9-C53A0A1B9284}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0B08642F-9A4B-4069-A0E9-C53A0A1B9284}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0B08642F-9A4B-4069-A0E9-C53A0A1B9284}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

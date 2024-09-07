@@ -10,7 +10,7 @@ namespace AktifTech.Business.Interfaces
 {
     public interface ICustomerService
     {
-        public Task<Customer> LoginAsync(string mail, string password);
+        public Task<Customer?> LoginAsync(string mail, string password);
         public Task<Customer?> GetCustomerAsync(int id);
         public Task<ResultSet> SaveCustomerAsync(Customer customer);
         public Task<ResultSet> UpdateCustomerAsync(Customer customer);
