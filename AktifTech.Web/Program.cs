@@ -1,4 +1,6 @@
 using AktifTech.Database.DataAccessLayer;
+using AktifTech.Web.ApiService;
+using AktifTech.Web.ApiService.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +8,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<AppDbContext>();
+
+builder.Services.AddHttpClient();
+
+builder.Services.AddScoped<IApiCustomerService, ApiCustomerService>();
+builder.Services.AddScoped<IApiProductService, ApiProductService>();
+builder.Services.AddScoped<IApiCustomerOrderService, ApiCustomerOrderService>();
 
 var app = builder.Build();
 

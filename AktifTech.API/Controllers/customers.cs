@@ -105,7 +105,7 @@ namespace AktifTech.API.Controllers
             return Ok(result);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
             ResultSet result = new ResultSet();
