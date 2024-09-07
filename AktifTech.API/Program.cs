@@ -7,6 +7,7 @@ using AktifTech.Database.Repositories;
 using AktifTech.Database.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
@@ -54,6 +55,9 @@ builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
 
 //builder.Services.AddAuthorization();
 
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -62,6 +66,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 

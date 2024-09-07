@@ -14,11 +14,13 @@ namespace AktifTech.API.Controllers
     public class customers : ControllerBase
     {
         private readonly ICustomerService _customerService;
-       // private readonly IAuthService _authService;
+        private readonly ILogger<customers> _logger;
+        // private readonly IAuthService _authService;
 
-        public customers(ICustomerService customerService)
+        public customers(ICustomerService customerService, ILogger<customers> logger)
         {
             _customerService = customerService;
+            _logger = logger;
             //_authService = authService;
         }
 
@@ -40,9 +42,12 @@ namespace AktifTech.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCustomerById(int id)
         {
+            _logger.LogInformation("Müşteri bilgisi için istek alındı.");
+
             Customer? customer = await _customerService.GetCustomerAsync(id);
             if (customer == null)
             {
+                _logger.LogWarning($"Müşteri için bilgi bulunamadı. id:{id}");
                 return NotFound(new { message = "Kayıt bulunamadı." });
             }
 
@@ -52,6 +57,8 @@ namespace AktifTech.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateCustomer([FromBody] Customer customer)
         {
+            _logger.LogInformation("Müşteri kaydı için istek alındı.");
+
             ResultSet result = new ResultSet();
             if (!ModelState.IsValid)
             {
@@ -62,12 +69,17 @@ namespace AktifTech.API.Controllers
                 result.Result = Result.Fail;
                 result.Message = "Lütfen zorunlu alanları doldurun";
                 result.Object = errors;
+
+                _logger.LogWarning($"Müşteri kaydı başarısız oldu. {result.Message}");
+
                 return BadRequest(result);
             }
 
             result = await _customerService.SaveCustomerAsync(customer);
             if (result.Result == Result.Fail)
             {
+                _logger.LogWarning($"Müşteri kaydı başarısız oldu. {result.Message}");
+
                 return BadRequest(result);
             }
 
@@ -77,6 +89,8 @@ namespace AktifTech.API.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateCustomer([FromBody] Customer customer)
         {
+            _logger.LogInformation("Müşteri güncelleme için istek alındı.");
+
             ResultSet result = new ResultSet();
             if (!ModelState.IsValid)
             {
@@ -87,18 +101,26 @@ namespace AktifTech.API.Controllers
                 result.Result = Result.Fail;
                 result.Message = "Lütfen zorunlu alanları doldurun";
                 result.Object = errors;
+
+                _logger.LogWarning($"Müşteri güncelleme başarısız oldu. {result.Message}");
+
                 return BadRequest(result);
             }
             else if (customer.Id <= 0)
             {
                 result.Result = Result.Fail;
                 result.Message = "Geçerli bir kayıt bulunamadı.";
+
+                _logger.LogWarning($"Müşteri güncelleme başarısız oldu. {result.Message}");
+
                 return BadRequest(result);
             }
 
             result = await _customerService.UpdateCustomerAsync(customer);
             if (result.Result == Result.Fail)
             {
+                _logger.LogWarning($"Müşteri güncelleme başarısız oldu. {result.Message}");
+
                 return BadRequest(result);
             }
 
@@ -108,6 +130,8 @@ namespace AktifTech.API.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCustomer(int id)
         {
+            _logger.LogInformation("Müşteri silme için istek alındı.");
+
             ResultSet result = new ResultSet();
             Customer? customer = await _customerService.GetCustomerAsync(id);
 
@@ -115,12 +139,17 @@ namespace AktifTech.API.Controllers
             {
                 result.Result = Result.Fail;
                 result.Message = "Geçerli bir kayıt bulunamadı.";
+
+                _logger.LogWarning($"Müşteri silme başarısız oldu. {result.Message}");
+
                 return BadRequest(result);
             }
 
             result = await _customerService.DeleteCustomerAsync(customer);
             if (result.Result == Result.Fail)
             {
+                _logger.LogWarning($"Müşteri silme başarısız oldu. {result.Message}");
+
                 return BadRequest(result);
             }
 

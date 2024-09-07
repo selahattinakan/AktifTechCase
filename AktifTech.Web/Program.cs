@@ -1,6 +1,7 @@
 using AktifTech.Database.DataAccessLayer;
 using AktifTech.Web.ApiService;
 using AktifTech.Web.ApiService.Interfaces;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,9 @@ builder.Services.AddScoped<IApiCustomerService, ApiCustomerService>();
 builder.Services.AddScoped<IApiProductService, ApiProductService>();
 builder.Services.AddScoped<IApiCustomerOrderService, ApiCustomerOrderService>();
 
+builder.Host.UseSerilog((context, configuration) =>
+    configuration.ReadFrom.Configuration(context.Configuration));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -24,6 +28,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
