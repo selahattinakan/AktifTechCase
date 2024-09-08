@@ -1,0 +1,1 @@
+AktifTech.API/Documentation adresinden detaylı dokümantasyona ulaşabilirsiniz.
