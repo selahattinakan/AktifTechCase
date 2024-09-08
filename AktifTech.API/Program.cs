@@ -7,8 +7,10 @@ using AktifTech.Cache.Repositories;
 using AktifTech.Database.DataAccessLayer;
 using AktifTech.Database.Repositories;
 using AktifTech.Database.Repositories.Interfaces;
+using AktifTech.MessageBroker.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using RabbitMQ.Client;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
@@ -38,6 +40,12 @@ builder.Services.AddScoped<IOrderProductService, OrderProductService>();
 builder.Services.AddStackExchangeRedis(builder.Configuration);
 builder.Services.AddSingleton<RedisRepository>();
 builder.Services.AddSingleton<IRedisService, RedisService>();
+
+//rabbitmq
+builder.Services.AddSingleton(sp => new ConnectionFactory() { HostName = "localhost", Port = 5672, DispatchConsumersAsync = true });//appsettings'den de alýnabilir
+builder.Services.AddSingleton<RabbitMQClient>();
+builder.Services.AddSingleton<RabbitMQPublisher>();
+builder.Services.AddSingleton<IRabbitMQPublishService, RabbitMQPublisherService>();
 
 //builder.Services.AddTransient<IAuthService, AuthService>();
 //builder.Services.AddTransient<ITokenService, TokenService>();

@@ -14,11 +14,14 @@ namespace AktifTech.Business.Services
     {
         private readonly ICustomerOrderRepository _customerOrderRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IRabbitMQPublishService _rabbitMQPublishService;
+        //decortor desing pattern uygulanacak
 
-        public CustomerOrderService(ICustomerOrderRepository customerOrderRepository, IProductRepository productRepository)
+        public CustomerOrderService(ICustomerOrderRepository customerOrderRepository, IProductRepository productRepository, IRabbitMQPublishService rabbitMQPublishService)
         {
             _customerOrderRepository = customerOrderRepository;
             _productRepository = productRepository;
+            _rabbitMQPublishService = rabbitMQPublishService;
         }
 
         public async Task<ResultSet> ConfirmCustomerOrder(int id)
@@ -27,7 +30,10 @@ namespace AktifTech.Business.Services
 
             if (result.Result == Result.Success)
             {
-                //rabbitmq
+                var customerOder = await _customerOrderRepository.GetCustomerOrderAsync(id);
+                string message = $"{DateTime.Now} : Siparişiniz alınmıştır. Sipariş numaranız: {customerOder.Id}";
+
+                _rabbitMQPublishService.Publish(message);
             }
             return result;
         }

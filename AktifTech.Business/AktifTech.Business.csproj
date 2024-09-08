@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AktifTech.Cache\AktifTech.Cache.csproj" />
     <ProjectReference Include="..\AktifTech.Database\AktifTech.Database.csproj" />
+    <ProjectReference Include="..\AktifTech.MessageBroker\AktifTech.MessageBroker.csproj" />
   </ItemGroup>
 
 </Project>
