@@ -24,8 +24,15 @@ namespace AktifTech.WorkerService
 
         public override Task StartAsync(CancellationToken cancellationToken)
         {
-            _channel = _rabbitmqClientService.Connect();
-            _channel.BasicQos(0, 1, false);
+            try
+            {
+                _channel = _rabbitmqClientService.Connect();
+                _channel.BasicQos(0, 1, false);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Lütfen docker-rabbitmq çalýþýr halde olduðundan emin olun");
+            }
 
             return base.StartAsync(cancellationToken);
         }

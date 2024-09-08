@@ -5,7 +5,7 @@ using RabbitMQ.Client;
 var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddHostedService<Worker>();
 
-builder.Services.AddSingleton(sp => new ConnectionFactory() { HostName = "localhost", Port = 5672, DispatchConsumersAsync = true });//appsettings'den de alýnabilir
+builder.Services.AddSingleton(sp => new ConnectionFactory() { HostName = builder.Configuration["RabbitMQ:Host"], Port = Int32.Parse(builder.Configuration["RabbitMQ:Port"]), DispatchConsumersAsync = true });
 builder.Services.AddSingleton<RabbitMQClientService>();
 builder.Services.AddSingleton<WriteTextService>();
 

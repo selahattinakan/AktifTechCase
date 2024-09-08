@@ -42,7 +42,7 @@ builder.Services.AddSingleton<RedisRepository>();
 builder.Services.AddSingleton<IRedisService, RedisService>();
 
 //rabbitmq
-builder.Services.AddSingleton(sp => new ConnectionFactory() { HostName = "localhost", Port = 5672, DispatchConsumersAsync = true });//appsettings'den de alýnabilir
+builder.Services.AddSingleton(sp => new ConnectionFactory() { HostName = builder.Configuration["RabbitMQ:Host"], Port = Int32.Parse(builder.Configuration["RabbitMQ:Port"]), DispatchConsumersAsync = true });
 builder.Services.AddSingleton<RabbitMQClient>();
 builder.Services.AddSingleton<RabbitMQPublisher>();
 builder.Services.AddSingleton<IRabbitMQPublishService, RabbitMQPublisherService>();
