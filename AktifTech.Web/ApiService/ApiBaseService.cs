@@ -7,7 +7,7 @@ namespace AktifTech.Web.ApiService
     public abstract class ApiBaseService
     {
         private readonly HttpClient _httpClient;
-        //private readonly string _baseUrl; //di string gibi primitive türleri inject edemiyor, sonra bakılacak
+        //private readonly string _baseUrl; //di string gibi primitive türleri inject edemiyor
         public ApiBaseService(HttpClient httpClient)
         {
             _httpClient = httpClient;
@@ -19,28 +19,13 @@ namespace AktifTech.Web.ApiService
             var response = await _httpClient.SendAsync(request);
             var statusCode = response.StatusCode;
             var message = await response.Content.ReadAsStringAsync();
-
-            //return new ResultSet
-            //{
-            //    Result = Result.Success,
-            //    Message = message
-            //};
-
             return JsonSerializer.Deserialize<ResultSet>(message);
         }
 
         public async Task<T?> GetAsync<T>(int id, string _baseUrl)
         {
-            //using var http = new HttpClient();
-            //var request = new HttpRequestMessage(HttpMethod.Get, $"{BaseUrl}/{id}");
-            ////request.Headers.Add("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNha2FuQGdtYWlsLmNvbSIsIm5iZiI6MTcyNTY1NDQwMiwiZXhwIjoxNzI1Njg0NDAyLCJpc3MiOiJJc3N1ZXJJbmZvcm1hdGlvbiIsImF1ZCI6IkF1ZGllbmNlSW5mb3JtYXRpb24ifQ.jhrVjjmUiN9g8BsFYNPciGoyBOaC3Z0zO8kGP6y6cP4");
-
-            //var Response = await http.SendAsync(request);
-            //var StatusCode = Response.StatusCode;
-            //var Message = await Response.Content.ReadAsStringAsync();
-
-
             var request = new HttpRequestMessage(HttpMethod.Get, $"{_baseUrl}/{id}");
+            //request.Headers.Add("Authorization", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6InNha2FuQGdtYWlsLmNvbSIsIm5iZiI6MTcyNTY1NDQwMiwiZXhwIjoxNzI1Njg0NDAyLCJpc3MiOiJJc3N1ZXJJbmZvcm1hdGlvbiIsImF1ZCI6IkF1ZGllbmNlSW5mb3JtYXRpb24ifQ.jhrVjjmUiN9g8BsFYNPciGoyBOaC3Z0zO8kGP6y6cP4");
             var response = await _httpClient.SendAsync(request);
             var statusCode = response.StatusCode;
             var message = await response.Content.ReadAsStringAsync();
@@ -66,11 +51,6 @@ namespace AktifTech.Web.ApiService
             var statusCode = response.StatusCode;
             var message = await response.Content.ReadAsStringAsync();
 
-            //return new ResultSet
-            //{
-            //    Result = Result.Success,
-            //    Message = message
-            //};
             return JsonSerializer.Deserialize<ResultSet>(message);
         }
 
@@ -82,11 +62,6 @@ namespace AktifTech.Web.ApiService
             var statusCode = response.StatusCode;
             var message = await response.Content.ReadAsStringAsync();
 
-            //return new ResultSet
-            //{
-            //    Result = Result.Success,
-            //    Message = message
-            //};
             return JsonSerializer.Deserialize<ResultSet>(message);
         }
     }

@@ -77,7 +77,6 @@ namespace AktifTech.API.Controllers
             return Ok(result);
         }
 
-
         [HttpPut]
         public async Task<IActionResult> UpdateOrderProduct([FromBody] OrderProductModel orderProductModel)
         {

@@ -246,7 +246,7 @@ namespace AktifTech.API.Controllers
         [HttpDelete("{customerOrderId}/orderproducts")]
         public async Task<IActionResult> DeleteCustomerOrderProduct(int customerOrderId)
         {
-            _logger.LogInformation("Müşteri sipariş silinmesi için istek alındı.");
+            _logger.LogInformation("Müşteri sipariş ürün silinmesi için istek alındı.");
 
             ResultSet result = new ResultSet();
             CustomerOrder? customerOrder = await _customerOrderService.GetCustomerOrderAsync(customerOrderId);
@@ -257,7 +257,7 @@ namespace AktifTech.API.Controllers
                 result.Result = Result.Fail;
                 result.Message = "Geçerli bir kayıt bulunamadı.";
 
-                _logger.LogWarning($"Müşteri sipariş silmesi başarısız oldu. {result.Message}");
+                _logger.LogWarning($"Müşteri sipariş ürün silmesi başarısız oldu. {result.Message}");
 
                 return BadRequest(result);
             }
@@ -265,7 +265,7 @@ namespace AktifTech.API.Controllers
             result = await _customerOrderService.UpdateCustomerOrderAsync(customerOrder);
             if (result.Result == Result.Fail)
             {
-                _logger.LogWarning($"Müşteri sipariş silmesi başarısız oldu. {result.Message}");
+                _logger.LogWarning($"Müşteri sipariş ürün silmesi başarısız oldu. {result.Message}");
 
                 return BadRequest(result);
             }

@@ -45,7 +45,6 @@ namespace AktifTech.Database.Repositories
 
         public async Task<Customer?> LoginAsync(string mail, string password)
         {
-            //string _password = Encryption.Encrypt(password); //business tarafına alınacak
             return await _context.Customer.FirstOrDefaultAsync(x => x.Mail == mail && x.Password == password);
         }
 
@@ -54,7 +53,6 @@ namespace AktifTech.Database.Repositories
             ResultSet result = new ResultSet();
             try
             {
-                //customer.Password = Encryption.Encrypt(customer.Password); //business tarafına alınacak
                 _context.Add(customer);
                 int count = await _context.SaveChangesAsync();
                 if (count > 0)
