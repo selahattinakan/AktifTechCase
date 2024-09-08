@@ -4,6 +4,7 @@ using AktifTech.Database.DataAccessLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AktifTech.Database.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240908055424_Orders")]
+    partial class Orders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,6 +93,8 @@ namespace AktifTech.Database.Migrations
                     b.HasIndex("CustomerId");
 
                     b.ToTable("CustomerOrder");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "CustomerOrder");
                 });
 
             modelBuilder.Entity("AktifTech.Database.Entity.OrderProduct", b =>
@@ -116,6 +121,8 @@ namespace AktifTech.Database.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerOrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderProduct");
 
@@ -157,6 +164,8 @@ namespace AktifTech.Database.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Product");
+
+                    b.HasAnnotation("Relational:JsonPropertyName", "Product");
                 });
 
             modelBuilder.Entity("AktifTech.Database.Entity.CustomerOrder", b =>
@@ -172,11 +181,21 @@ namespace AktifTech.Database.Migrations
 
             modelBuilder.Entity("AktifTech.Database.Entity.OrderProduct", b =>
                 {
-                    b.HasOne("AktifTech.Database.Entity.CustomerOrder", null)
+                    b.HasOne("AktifTech.Database.Entity.CustomerOrder", "CustomerOrder")
                         .WithMany("OrderProducts")
                         .HasForeignKey("CustomerOrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("AktifTech.Database.Entity.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomerOrder");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("AktifTech.Database.Entity.CustomerOrder", b =>

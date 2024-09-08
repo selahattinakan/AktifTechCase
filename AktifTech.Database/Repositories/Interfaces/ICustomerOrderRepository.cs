@@ -11,8 +11,10 @@ namespace AktifTech.Database.Repositories.Interfaces
     public interface ICustomerOrderRepository
     {
         public Task<CustomerOrder?> GetCustomerOrderAsync(int id);
+        public Task<List<CustomerOrder>?> GetCustomerListOrderAsync(int customerId);
         public Task<ResultSet> SaveCustomerOrderAsync(CustomerOrder customerOrder);
         public Task<ResultSet> UpdateCustomerOrderAsync(CustomerOrder customerOrder);
         public Task<ResultSet> DeleteCustomerOrderAsync(CustomerOrder customerOrder);
+        public Task<ResultSet> ConfirmCustomerOrder(int id);
     }
 }

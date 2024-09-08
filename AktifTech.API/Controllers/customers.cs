@@ -1,4 +1,5 @@
 ﻿using AktifTech.API.Authentication.Interfaces;
+using AktifTech.API.Models;
 using AktifTech.Business.Interfaces;
 using AktifTech.Constant;
 using AktifTech.Database.Entity;
@@ -25,19 +26,19 @@ namespace AktifTech.API.Controllers
         }
 
 
-        //[HttpPost("{mail}/{password}")]
-        //public async Task<IActionResult> LoginControl(string mail, string password)
-        //{
-        //    Customer? customer = await _customerService.LoginAsync(mail, Encryption.Encrypt(password));
-        //    if (customer == null)
-        //    {
-        //        return NotFound(new { message = "Kayıt bulunamadı." });
-        //    }
+        [HttpPost("{mail}/{password}")]
+        public async Task<IActionResult> LoginControl(string mail, string password)
+        {
+            Customer? customer = await _customerService.LoginAsync(mail, Encryption.Encrypt(password));
+            if (customer == null)
+            {
+                return NotFound(new { message = "Kayıt bulunamadı." });
+            }
 
-        //    var result = await _authService.LoginUserAsync(mail);
+            //var result = await _authService.LoginUserAsync(mail);
 
-        //    return Ok(result);
-        //}
+            return Ok(customer);
+        }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCustomerById(int id)
@@ -55,7 +56,7 @@ namespace AktifTech.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCustomer([FromBody] Customer customer)
+        public async Task<IActionResult> CreateCustomer([FromBody] CustomerModel customerModel)
         {
             _logger.LogInformation("Müşteri kaydı için istek alındı.");
 
@@ -75,6 +76,15 @@ namespace AktifTech.API.Controllers
                 return BadRequest(result);
             }
 
+            Customer customer = new Customer
+            {
+                FullName = customerModel.FullName,
+                Mail = customerModel.Mail,
+                Password = Encryption.Encrypt(customerModel.Password),
+                Phone = customerModel.Phone,
+                Address = customerModel.Address
+            };
+
             result = await _customerService.SaveCustomerAsync(customer);
             if (result.Result == Result.Fail)
             {
@@ -87,7 +97,7 @@ namespace AktifTech.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateCustomer([FromBody] Customer customer)
+        public async Task<IActionResult> UpdateCustomer([FromBody] CustomerModel customerModel)
         {
             _logger.LogInformation("Müşteri güncelleme için istek alındı.");
 
@@ -106,7 +116,7 @@ namespace AktifTech.API.Controllers
 
                 return BadRequest(result);
             }
-            else if (customer.Id <= 0)
+            else if (customerModel.Id <= 0)
             {
                 result.Result = Result.Fail;
                 result.Message = "Geçerli bir kayıt bulunamadı.";
@@ -115,6 +125,16 @@ namespace AktifTech.API.Controllers
 
                 return BadRequest(result);
             }
+
+            Customer customer = new Customer
+            {
+                Id = customerModel.Id,
+                FullName = customerModel.FullName,
+                Mail = customerModel.Mail,
+                Password = Encryption.Encrypt(customerModel.Password),
+                Phone = customerModel.Phone,
+                Address = customerModel.Address
+            };
 
             result = await _customerService.UpdateCustomerAsync(customer);
             if (result.Result == Result.Fail)

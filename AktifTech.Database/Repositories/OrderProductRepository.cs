@@ -11,19 +11,18 @@ using System.Threading.Tasks;
 
 namespace AktifTech.Database.Repositories
 {
-    public class CustomerRepository : ICustomerRepository
+    public class OrderProductRepository : IOrderProductRepository
     {
         private readonly AppDbContext _context;
 
-        public CustomerRepository(AppDbContext context)
+        public OrderProductRepository(AppDbContext context)
         {
             _context = context;
         }
-
-        public async Task<ResultSet> DeleteCustomerAsync(Customer customer)
+        public async Task<ResultSet> DeleteOrderProductAsync(OrderProduct orderProduct)
         {
             ResultSet result = new ResultSet();
-            _context.Remove(customer);
+            _context.Remove(orderProduct);
             int count = await _context.SaveChangesAsync();
             if (count <= 0)
             {
@@ -33,33 +32,26 @@ namespace AktifTech.Database.Repositories
             return result;
         }
 
-        public async Task<Customer?> GetCustomerAsync(int id)
+        public async Task<OrderProduct?> GetOrderProductAsync(int id)
         {
-            return await _context.Customer.FindAsync(id);
+            return await _context.OrderProduct.FindAsync(id);
         }
 
-        public async Task<List<Customer>> GetCustomerListAsync()
+        public async Task<List<OrderProduct>> GetOrderProductListAsync()
         {
-            return await _context.Customer.ToListAsync();
+            return await _context.OrderProduct.ToListAsync();
         }
 
-        public async Task<Customer?> LoginAsync(string mail, string password)
-        {
-            //string _password = Encryption.Encrypt(password); //business tarafına alınacak
-            return await _context.Customer.FirstOrDefaultAsync(x => x.Mail == mail && x.Password == password);
-        }
-
-        public async Task<ResultSet> SaveCustomerAsync(Customer customer)
+        public async Task<ResultSet> SaveOrderProductAsync(OrderProduct orderProduct)
         {
             ResultSet result = new ResultSet();
             try
             {
-                //customer.Password = Encryption.Encrypt(customer.Password); //business tarafına alınacak
-                _context.Add(customer);
+                _context.Add(orderProduct);
                 int count = await _context.SaveChangesAsync();
                 if (count > 0)
                 {
-                    result.Id = customer.Id;
+                    result.Id = orderProduct.Id;
                 }
                 else
                 {
@@ -75,16 +67,16 @@ namespace AktifTech.Database.Repositories
             return result;
         }
 
-        public async Task<ResultSet> UpdateCustomerAsync(Customer customer)
+        public async Task<ResultSet> UpdateOrderProductAsync(OrderProduct orderProduct)
         {
             ResultSet result = new ResultSet();
             try
             {
-                _context.Update(customer);
+                _context.Update(orderProduct);
                 int count = await _context.SaveChangesAsync();
                 if (count > 0)
                 {
-                    result.Id = customer.Id;
+                    result.Id = orderProduct.Id;
                 }
                 else
                 {

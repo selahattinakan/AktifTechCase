@@ -14,6 +14,7 @@ namespace AktifTech.Database.DataAccessLayer
         public DbSet<Customer> Customer { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<CustomerOrder> CustomerOrder { get; set; }
+        public DbSet<OrderProduct> OrderProduct { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

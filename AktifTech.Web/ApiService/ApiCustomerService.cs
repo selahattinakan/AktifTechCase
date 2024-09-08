@@ -1,6 +1,7 @@
 ﻿using AktifTech.Constant;
 using AktifTech.Database.Entity;
 using AktifTech.Web.ApiService.Interfaces;
+using System.Text.Json;
 
 namespace AktifTech.Web.ApiService
 {
@@ -21,6 +22,22 @@ namespace AktifTech.Web.ApiService
         public async Task<Customer?> GetCustomerAsync(int id)
         {
             return await GetAsync<Customer>(id, BaseUrl);
+        }
+
+        public async Task<Customer?> LoginAsync(string mail, string password)
+        {
+            using var http = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, $"{BaseUrl}/{mail}/{password}");
+
+            var Response = await http.SendAsync(request);
+            var StatusCode = Response.StatusCode;
+            var Message = await Response.Content.ReadAsStringAsync();
+
+            if (StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                return JsonSerializer.Deserialize<Customer>(Message); 
+            }
+            return null;
         }
 
         public async Task<ResultSet> SaveCustomerAsync(Customer customer)

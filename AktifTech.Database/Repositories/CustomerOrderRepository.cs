@@ -20,6 +20,47 @@ namespace AktifTech.Database.Repositories
             _context = context;
         }
 
+        public async Task<ResultSet> ConfirmCustomerOrder(int id)
+        {
+            ResultSet resultSet = new ResultSet();
+
+            using (var transaction = _context.Database.BeginTransaction())
+            {
+                try
+                {
+                    var customerOrder = await GetCustomerOrderAsync(id);
+
+                    foreach (var item in customerOrder.OrderProducts)
+                    {
+                        var product = await _context.Product.FindAsync(item.ProductId);
+
+                        if (product.Quantity < item.Quantity)
+                        {
+                            resultSet.Result = Result.Fail;
+                            resultSet.Message = "Stok yetersiz";
+                            return resultSet;
+                        }
+
+
+                        product.Quantity -= item.Quantity;
+                        _context.Update(product);
+                        await _context.SaveChangesAsync();
+                    }
+
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+
+                    resultSet.Result = Result.Fail;
+                    resultSet.Message = ex.Message;
+                }
+            }
+            return resultSet;
+        }
+
         public async Task<ResultSet> DeleteCustomerOrderAsync(CustomerOrder customerOrder)
         {
             ResultSet result = new ResultSet();
@@ -33,9 +74,14 @@ namespace AktifTech.Database.Repositories
             return result;
         }
 
+        public async Task<List<CustomerOrder>?> GetCustomerListOrderAsync(int customerId)
+        {
+            return await _context.CustomerOrder.Where(x => x.CustomerId == customerId).ToListAsync();
+        }
+
         public async Task<CustomerOrder?> GetCustomerOrderAsync(int id)
         {
-            return await _context.CustomerOrder.FindAsync(id);
+            return await _context.CustomerOrder.Include(x => x.Customer).Include(x => x.OrderProducts).FirstAsync(x => x.Id == id);
         }
 
         public async Task<ResultSet> SaveCustomerOrderAsync(CustomerOrder customerOrder)

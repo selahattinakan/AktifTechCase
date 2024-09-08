@@ -29,6 +29,11 @@ namespace AktifTech.Business.Services
             return await _customerRepository.GetCustomerAsync(id);
         }
 
+        public async Task<List<Customer>> GetCustomerListAsync()
+        {
+            return await _customerRepository.GetCustomerListAsync();
+        }
+
         public async Task<Customer?> LoginAsync(string mail, string password)
         {
             return await _customerRepository.LoginAsync(mail, password);

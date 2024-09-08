@@ -10,7 +10,7 @@ namespace AktifTech.Constant
     {
         private const string key = "AktifTech";
 
-        public static string Encrypt(string text)
+        public static string Encrypt(string text = "")
         {
             byte[] textBytes = Encoding.UTF8.GetBytes(text);
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);
@@ -23,7 +23,7 @@ namespace AktifTech.Constant
             return Convert.ToBase64String(textBytes);
         }
 
-        public static string Decrypt(string text)
+        public static string Decrypt(string text = "")
         {
             byte[] textBytes = Convert.FromBase64String(text);
             byte[] keyBytes = Encoding.UTF8.GetBytes(key);

@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
-namespace AktifTech.Database.Entity
+namespace AktifTech.API.Models
 {
-    public class Customer
+    public class CustomerModel
     {
         [JsonPropertyName("Id")]
         public int Id { get; set; }
@@ -17,23 +12,22 @@ namespace AktifTech.Database.Entity
         [Required(ErrorMessage = "Lütfen müşteri adını giriniz.")]
         public string FullName { get; set; }
 
-        [JsonPropertyName("Mail")]
+        [EmailAddress(ErrorMessage = "Lütfen geçerli bir mail giriniz.")]
         [Required(ErrorMessage = "Lütfen müşteri mailini giriniz.")]
-        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "Lütfen geçerli bir mail giriniz.")]
+        [JsonPropertyName("Mail")]
         public string Mail { get; set; }
 
-        [JsonPropertyName("Phone")]
+        [Phone(ErrorMessage = "Lütfen geçerli bir telefon giriniz.")]
         [Required(ErrorMessage = "Lütfen müşteri telefonunu giriniz.")]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Lütfen geçerli bir telefon giriniz.")]
+        [JsonPropertyName("Phone")]
         public string Phone { get; set; }
 
-        [JsonPropertyName("Address")]
         [Required(ErrorMessage = "Lütfen müşteri adresini giriniz.")]
+        [JsonPropertyName("Address")]
         public string Address { get; set; }
 
-        [JsonPropertyName("Password")]
         [Required(ErrorMessage = "Lütfen müşteri şifresini giriniz.")]
+        [JsonPropertyName("Password")]
         public string Password { get; set; }
-
     }
 }

@@ -12,6 +12,7 @@ namespace AktifTech.Database.Repositories.Interfaces
     {
         public Task<Customer?> LoginAsync(string mail, string password);
         public Task<Customer?> GetCustomerAsync(int id);
+        public Task<List<Customer>> GetCustomerListAsync();
         public Task<ResultSet> SaveCustomerAsync(Customer customer);
         public Task<ResultSet> UpdateCustomerAsync(Customer customer);
         public Task<ResultSet> DeleteCustomerAsync(Customer customer);

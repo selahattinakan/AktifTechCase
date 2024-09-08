@@ -3,11 +3,13 @@ using AktifTech.Database.Entity;
 using AktifTech.Database.Repositories.Interfaces;
 using AktifTech.Web.ApiService.Interfaces;
 using AktifTech.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace AktifTech.Web.Controllers
 {
+   
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -21,9 +23,12 @@ namespace AktifTech.Web.Controllers
             _apiProductService = apiProductService;
         }
 
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View();
+            List<Product> productList = await _apiProductService.GetProductListAsync();
+            productList = productList.Where(x => x.Quantity > 0).ToList();
+            return View(productList);
         }
 
         public async Task<IActionResult> InitialData()
@@ -138,16 +143,12 @@ namespace AktifTech.Web.Controllers
             var res8 = await _apiProductService.SaveProductAsync(product6);
             var res9 = await _apiProductService.SaveProductAsync(product7);
             var res10 = await _apiProductService.SaveProductAsync(product8);
-            var res11 = await _apiProductService.SaveProductAsync(product9); 
+            var res11 = await _apiProductService.SaveProductAsync(product9);
             #endregion
 
             return Content("Test datalarý hazýrlandý");
         }
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

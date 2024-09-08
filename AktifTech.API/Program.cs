@@ -25,10 +25,12 @@ builder.Services.AddDbContext<AppDbContext>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICustomerOrderRepository, CustomerOrderRepository>();
+builder.Services.AddScoped<IOrderProductRepository, OrderProductRepository>();
 
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
+builder.Services.AddScoped<IOrderProductService, OrderProductService>();
 
 //builder.Services.AddTransient<IAuthService, AuthService>();
 //builder.Services.AddTransient<ITokenService, TokenService>();

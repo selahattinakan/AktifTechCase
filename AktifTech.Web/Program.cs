@@ -1,6 +1,7 @@
 using AktifTech.Database.DataAccessLayer;
 using AktifTech.Web.ApiService;
 using AktifTech.Web.ApiService.Interfaces;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,12 @@ builder.Services.AddScoped<IApiCustomerOrderService, ApiCustomerOrderService>();
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(settings =>
+{
+    settings.LoginPath = "/Login/Index";
+}
+);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -35,6 +42,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseCookiePolicy();
 
 app.UseAuthorization();
 

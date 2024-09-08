@@ -3,31 +3,31 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AktifTech.Database.Entity
 {
     public class CustomerOrder
     {
+        [JsonPropertyName("Id")]
         public int Id { get; set; }
 
+        [JsonPropertyName("CustomerId")]
         [Required(ErrorMessage = "Lütfen müşteri bilgisi zorunludur.")]
         public int CustomerId { get; set; }
 
-        [Required(ErrorMessage = "Lütfen ürün bilgisi zorunludur.")]
-        public int ProductId { get; set; }
-
+        [JsonPropertyName("Address")]
         [Required(ErrorMessage = "Lütfen adres bilgisi zorunludur.")]
         public string Address { get; set; }
 
-        [Required(ErrorMessage = "Lütfen miktar bilgisi zorunludur.")]
-        public int Quantity { get; set; }
-
-        [Required(ErrorMessage = "Lütfen fiyat bilgisi zorunludur.")]
-        public decimal Price { get; set; }
+        [JsonPropertyName("OrderDate")]
         public DateTime OrderDate { get; set; }
 
-        public virtual Customer Customer { get; set; }
-        public virtual Product Product { get; set; }
+        [JsonPropertyName("Customer")]
+        public Customer? Customer { get; set; }
+
+        [JsonPropertyName("OrderProducts")]
+        public List<OrderProduct>? OrderProducts { get; set; }
     }
 }

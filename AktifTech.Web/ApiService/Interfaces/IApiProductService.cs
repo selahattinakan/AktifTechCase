@@ -5,6 +5,7 @@ namespace AktifTech.Web.ApiService.Interfaces
 {
     public interface IApiProductService
     {
+        public Task<List<Product>> GetProductListAsync();
         public Task<Product?> GetProductAsync(int id);
         public Task<ResultSet> SaveProductAsync(Product product);
         public Task<ResultSet> UpdateProductAsync(Product product);

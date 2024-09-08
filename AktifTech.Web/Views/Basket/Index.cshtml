@@ -1,0 +1,75 @@
+﻿@model List<AktifTech.Web.Models.BasketProductModel>
+
+<form method="post" action="/Basket/ConfirmBasket">
+    <div class="cart">
+        @foreach (var item in Model)
+        {
+            <div class="cart-item">
+                <div class="product-image">
+                    <img src="~/img/kirtasiye2.jpg" alt="Ürün Resmi" />
+                </div>
+                <div class="product-info">
+                    <h3>@item.Name</h3>
+                    <p><strong>Barkod:</strong> @item.Barkod</p>
+                    <p><strong>Açıklama:</strong> @item.Description</p>
+                    <p><strong>Fiyat:</strong> @item.Price.ToString("C")</p>
+                    <div class="quantity">
+                        <label>Adet: </label>
+                        <input type="number" class="form-control me-2" name="Quantities[@item.Id]" min="1" max="@item.Stock" step="1" value="@item.Quantity" style="width: 70px;">
+                        @* <input type="hidden" name="Id" value="@item.Id" /> *@
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="cart-footer">
+            <button type="submit" class="btn btn-primary">Devam Et</button>
+        </div>
+    </div>
+</form>
+
+<style>
+    .cart {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .cart-item {
+        display: flex;
+        padding: 15px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .product-image img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .product-info {
+        flex-grow: 1;
+        margin-left: 15px;
+    }
+
+    .quantity input {
+        width: 50px;
+    }
+
+    .cart-footer {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+        .cart-footer button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+            .cart-footer button:hover {
+                background-color: #45a049;
+            }
+</style>
