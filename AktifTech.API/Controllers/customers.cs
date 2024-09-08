@@ -25,6 +25,7 @@ namespace AktifTech.API.Controllers
         }
 
         [HttpPost("{mail}/{password}")]
+        [AllowAnonymous] // test datası oluşturabilmek için
         public async Task<IActionResult> LoginControl(string mail, string password)
         {
             Customer? customer = await _customerService.LoginAsync(mail, Encryption.Encrypt(password));
@@ -51,6 +52,7 @@ namespace AktifTech.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]// test datası oluşturabilmek için
         public async Task<IActionResult> CreateCustomer([FromBody] CustomerModel customerModel)
         {
             _logger.LogInformation("Müşteri kaydı için istek alındı.");

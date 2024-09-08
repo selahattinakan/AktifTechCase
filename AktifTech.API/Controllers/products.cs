@@ -23,6 +23,7 @@ namespace AktifTech.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]// test datası oluşturabilmek için
         public async Task<IActionResult> GetProductList()
         {
             _logger.LogInformation("Tüm ürünlerin listelenmesi için istek alındı.");
@@ -47,6 +48,7 @@ namespace AktifTech.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]// test datası oluşturabilmek için
         public async Task<IActionResult> CreateProduct([FromBody] Product product)
         {
             _logger.LogInformation("Ürün kaydı için istek alındı.");
