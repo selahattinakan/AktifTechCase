@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AktifTech.Business.Interfaces
 {
-    public interface ICustomerOrderService
+    public interface ICustomerOrderService : IMessageBroker
     {
         public Task<CustomerOrder?> GetCustomerOrderAsync(int id);
         public Task<List<CustomerOrder>?> GetCustomerListOrderAsync(int customerId);
@@ -16,6 +16,6 @@ namespace AktifTech.Business.Interfaces
         public Task<ResultSet> UpdateCustomerOrderAsync(CustomerOrder customerOrder);
         public Task<ResultSet> UpdateCustomerOrderProductAsync(CustomerOrder customerOrder);
         public Task<ResultSet> DeleteCustomerOrderAsync(CustomerOrder customerOrder);
-        public Task<ResultSet> ConfirmCustomerOrder(int id);
+        //public Task<ResultSet> ConfirmCustomerOrder(int id);
     }
 }

@@ -16,14 +16,16 @@ namespace AktifTech.API.Controllers
     public class customerorders : ControllerBase
     {
         private readonly ICustomerOrderService _customerOrderService;
+        private readonly IMessageBroker _messageBroker;
         private readonly IProductService _productService;
         private readonly ILogger<customerorders> _logger;
 
-        public customerorders(ICustomerOrderService customerOrderService, ILogger<customerorders> logger, IProductService productService)
+        public customerorders(ICustomerOrderService customerOrderService, ILogger<customerorders> logger, IProductService productService, IMessageBroker messageBroker)
         {
             _customerOrderService = customerOrderService;
             _logger = logger;
             _productService = productService;
+            _messageBroker = messageBroker;
         }
 
         [HttpGet("{id}")]
@@ -276,7 +278,8 @@ namespace AktifTech.API.Controllers
         {
             _logger.LogInformation("Müşteri sipariş onaylanması için istek alındı.");
 
-            ResultSet result = await _customerOrderService.ConfirmCustomerOrder(id);
+            //ResultSet result = await _customerOrderService.ConfirmCustomerOrder(id);
+            ResultSet result = await _messageBroker.ConfirmCustomerOrder(id);
             if (result.Result == Result.Fail)
             {
                 _logger.LogWarning($"Müşteri sipariş için bilgi bulunamadı. id:{id}");

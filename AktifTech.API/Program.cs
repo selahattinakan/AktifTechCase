@@ -1,5 +1,6 @@
 using AktifTech.API.Authentication.Interfaces;
 using AktifTech.API.Authentication.Services;
+using AktifTech.Business.Decorators;
 using AktifTech.Business.Interfaces;
 using AktifTech.Business.Services;
 using AktifTech.Cache.Extensions;
@@ -75,6 +76,17 @@ builder.Services.AddSingleton(sp => new ConnectionFactory() { HostName = builder
 builder.Services.AddSingleton<RabbitMQClient>();
 builder.Services.AddSingleton<RabbitMQPublisher>();
 builder.Services.AddSingleton<IRabbitMQPublishService, RabbitMQPublisherService>();
+
+//decorator design pattern
+builder.Services.AddScoped<IMessageBroker>(sp =>
+{
+    var customerOrderService = sp.GetRequiredService<ICustomerOrderService>();
+    var rabbitMQPublishService = sp.GetRequiredService<IRabbitMQPublishService>();
+
+    var rabbitMQDecorator = new RabbitMQDecorator(customerOrderService, rabbitMQPublishService);
+
+    return rabbitMQDecorator;
+});
 
 //JWT
 builder.Services.AddTransient<IAuthService, AuthService>();
