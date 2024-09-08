@@ -3,6 +3,7 @@ using AktifTech.Business.Interfaces;
 using AktifTech.Business.Services;
 using AktifTech.Constant;
 using AktifTech.Database.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using static System.Runtime.InteropServices.JavaScript.JSType;
@@ -11,6 +12,7 @@ namespace AktifTech.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class customerorders : ControllerBase
     {
         private readonly ICustomerOrderService _customerOrderService;

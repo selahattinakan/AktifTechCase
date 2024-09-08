@@ -2,6 +2,7 @@
 using AktifTech.Business.Interfaces;
 using AktifTech.Constant;
 using AktifTech.Database.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace AktifTech.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class orderproducts : ControllerBase
     {
         private readonly IOrderProductService _orderProductService;

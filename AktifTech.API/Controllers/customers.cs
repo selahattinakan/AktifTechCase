@@ -12,19 +12,17 @@ namespace AktifTech.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class customers : ControllerBase
     {
         private readonly ICustomerService _customerService;
         private readonly ILogger<customers> _logger;
-        // private readonly IAuthService _authService;
 
         public customers(ICustomerService customerService, ILogger<customers> logger)
         {
             _customerService = customerService;
             _logger = logger;
-            //_authService = authService;
         }
-
 
         [HttpPost("{mail}/{password}")]
         public async Task<IActionResult> LoginControl(string mail, string password)
@@ -34,9 +32,6 @@ namespace AktifTech.API.Controllers
             {
                 return NotFound(new { message = "Kayıt bulunamadı." });
             }
-
-            //var result = await _authService.LoginUserAsync(mail);
-
             return Ok(customer);
         }
 

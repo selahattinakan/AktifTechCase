@@ -10,6 +10,7 @@ using AktifTech.Database.Repositories.Interfaces;
 using AktifTech.MessageBroker.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using RabbitMQ.Client;
 using Serilog;
 using System.IdentityModel.Tokens.Jwt;
@@ -22,7 +23,35 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "AktifTech.API", Version = "v1" });
+
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT ile elde edilen token'ý giriniz."
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+    });
+});
 
 builder.Services.AddDbContext<AppDbContext>();
 
@@ -47,30 +76,29 @@ builder.Services.AddSingleton<RabbitMQClient>();
 builder.Services.AddSingleton<RabbitMQPublisher>();
 builder.Services.AddSingleton<IRabbitMQPublishService, RabbitMQPublisherService>();
 
-//builder.Services.AddTransient<IAuthService, AuthService>();
-//builder.Services.AddTransient<ITokenService, TokenService>();
+//JWT
+builder.Services.AddTransient<IAuthService, AuthService>();
+builder.Services.AddTransient<ITokenService, TokenService>();
 
-////JWT
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-//}).AddJwtBearer(o =>
-//{
-//    o.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
-//        ValidAudience = builder.Configuration["JWT:ValidAudience"],
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])),
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = false,
-//        ValidateIssuerSigningKey = true
-//    };
-//});
-
-//builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(o =>
+{
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = builder.Configuration["JWT:ValidIssuer"],
+        ValidAudience = builder.Configuration["JWT:ValidAudience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"])),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = false,
+        ValidateIssuerSigningKey = true
+    };
+});
+builder.Services.AddAuthorization();
 
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
@@ -88,86 +116,9 @@ app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication(); //jwt
 app.UseAuthorization();
 
 app.MapControllers();
 
-//app.Use(async (context, next) =>
-//{
-//    if (context.Request.RouteValues.Count == 0)
-//    {
-//        context.Response.StatusCode = 404;
-//        return;
-//    }
-//    else
-//    {
-//        if (context.Request.Path == "/api/Customers/LoginControl")
-//        {
-//            await next.Invoke();
-//        }
-//        else
-//        {
-//            if (context.Request.Headers.ContainsKey("Authorization"))
-//            {
-//                string AuthHeader = context.Request.Headers["Authorization"];
-//                bool isValid = false;
-//                var handler = new JwtSecurityTokenHandler();
-
-//                //invalid token kontrolü
-//                var CheckIsJWT = IsValidJWT(AuthHeader, app);
-//                if (CheckIsJWT == false)
-//                {
-//                    context.Response.StatusCode = 403;
-//                    return;
-//                }
-//                var token = handler.ReadJwtToken(AuthHeader);
-//                isValid = true;
-//                //doðrulama burda
-//                if (isValid)
-//                {
-//                    await next.Invoke();
-//                }
-//                else
-//                {
-//                    context.Response.StatusCode = 403;
-//                    return;
-//                }
-//            }
-//            else
-//            {
-//                context.Response.StatusCode = 403;
-//                return;
-//            }
-//        }
-//    }
-//});
-
 app.Run();
-
-//static bool IsValidJWT(string token, WebApplication app)
-//{
-//    try
-//    {
-//        var handler = new JwtSecurityTokenHandler();
-//        handler.ValidateToken(token, new TokenValidationParameters
-//        {
-//            ValidIssuer = app.Configuration["JWT:ValidIssuer"],
-//            ValidAudience = app.Configuration["JWT:ValidAudience"],
-//            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(app.Configuration["JWT:Secret"])),
-//            ValidateIssuer = true,
-//            ValidateAudience = true,
-//            ValidateLifetime = false,
-//            ValidateIssuerSigningKey = true
-//        }, out SecurityToken validatedToken);
-//        if (validatedToken != null)
-//        {
-//            return true;
-//        }
-//        return false;
-//    }
-//    catch (Exception ex)
-//    {
-//        return false;
-//    }
-
-//}
