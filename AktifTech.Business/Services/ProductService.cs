@@ -13,15 +13,24 @@ namespace AktifTech.Business.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly IRedisService _redisService;
+        //decorator design pattern uygulanacak
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, IRedisService redisService)
         {
             _productRepository = productRepository;
+            _redisService = redisService;
         }
 
         public async Task<ResultSet> DeleteProductAsync(Product product)
         {
-            return await _productRepository.DeleteProductAsync(product);
+            ResultSet result = await _productRepository.DeleteProductAsync(product);
+            if (result.Result == Result.Success)
+            {
+                await _redisService.CreateProductListCache(await _productRepository.GetProductListAsync());
+            }
+
+            return result;
         }
 
         public async Task<Product?> GetProductAsync(int id)
@@ -31,17 +40,30 @@ namespace AktifTech.Business.Services
 
         public async Task<List<Product>> GetProductListAsync()
         {
-            return await _productRepository.GetProductListAsync();
+            List<Product> productList = await _redisService.GetProductListFromCache();
+            return productList ?? await _productRepository.GetProductListAsync();
         }
 
         public async Task<ResultSet> SaveProductAsync(Product product)
         {
-            return await _productRepository.SaveProductAsync(product);
+            ResultSet result = await _productRepository.SaveProductAsync(product);
+            if (result.Result == Result.Success)
+            {
+                await _redisService.CreateProductListCache(await _productRepository.GetProductListAsync());
+            }
+
+            return result;
         }
 
         public async Task<ResultSet> UpdateProductAsync(Product product)
         {
-            return await _productRepository.UpdateProductAsync(product);
+            ResultSet result = await _productRepository.UpdateProductAsync(product);
+            if (result.Result == Result.Success)
+            {
+                await _redisService.CreateProductListCache(await _productRepository.GetProductListAsync());
+            }
+
+            return result;
         }
     }
 }

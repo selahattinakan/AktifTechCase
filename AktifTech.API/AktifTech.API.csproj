@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AktifTech.Business\AktifTech.Business.csproj" />
+    <ProjectReference Include="..\AktifTech.Cache\AktifTech.Cache.csproj" />
     <ProjectReference Include="..\AktifTech.Database\AktifTech.Database.csproj" />
   </ItemGroup>
 

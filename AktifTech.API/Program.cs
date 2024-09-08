@@ -2,6 +2,8 @@ using AktifTech.API.Authentication.Interfaces;
 using AktifTech.API.Authentication.Services;
 using AktifTech.Business.Interfaces;
 using AktifTech.Business.Services;
+using AktifTech.Cache.Extensions;
+using AktifTech.Cache.Repositories;
 using AktifTech.Database.DataAccessLayer;
 using AktifTech.Database.Repositories;
 using AktifTech.Database.Repositories.Interfaces;
@@ -31,6 +33,11 @@ builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<ICustomerOrderService, CustomerOrderService>();
 builder.Services.AddScoped<IOrderProductService, OrderProductService>();
+
+//redis
+builder.Services.AddStackExchangeRedis(builder.Configuration);
+builder.Services.AddSingleton<RedisRepository>();
+builder.Services.AddSingleton<IRedisService, RedisService>();
 
 //builder.Services.AddTransient<IAuthService, AuthService>();
 //builder.Services.AddTransient<ITokenService, TokenService>();

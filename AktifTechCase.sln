@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AktifTech.Web", "AktifTech.Web\AktifTech.Web.csproj", "{AF949D48-4049-4E40-B354-A239B44CF79B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AktifTech.Web", "AktifTech.Web\AktifTech.Web.csproj", "{AF949D48-4049-4E40-B354-A239B44CF79B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AktifTech.Database", "AktifTech.Database\AktifTech.Database.csproj", "{450291F1-F507-4CFE-A9FE-B3BD390E5FB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AktifTech.Database", "AktifTech.Database\AktifTech.Database.csproj", "{450291F1-F507-4CFE-A9FE-B3BD390E5FB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AktifTech.Constant", "AktifTech.Constant\AktifTech.Constant.csproj", "{4E5702E5-3AE4-4C9F-9A70-2EF80EF23354}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AktifTech.Constant", "AktifTech.Constant\AktifTech.Constant.csproj", "{4E5702E5-3AE4-4C9F-9A70-2EF80EF23354}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AktifTech.Business", "AktifTech.Business\AktifTech.Business.csproj", "{33D18D8D-C35E-4490-B128-694FACA58FBF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AktifTech.Business", "AktifTech.Business\AktifTech.Business.csproj", "{33D18D8D-C35E-4490-B128-694FACA58FBF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AktifTech.API", "AktifTech.API\AktifTech.API.csproj", "{0B08642F-9A4B-4069-A0E9-C53A0A1B9284}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AktifTech.API", "AktifTech.API\AktifTech.API.csproj", "{0B08642F-9A4B-4069-A0E9-C53A0A1B9284}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AktifTech.Cache", "AktifTech.Cache\AktifTech.Cache.csproj", "{19D1F193-3486-478D-84EF-0DE7A8412CBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{0B08642F-9A4B-4069-A0E9-C53A0A1B9284}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B08642F-9A4B-4069-A0E9-C53A0A1B9284}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B08642F-9A4B-4069-A0E9-C53A0A1B9284}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19D1F193-3486-478D-84EF-0DE7A8412CBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19D1F193-3486-478D-84EF-0DE7A8412CBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19D1F193-3486-478D-84EF-0DE7A8412CBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19D1F193-3486-478D-84EF-0DE7A8412CBF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
